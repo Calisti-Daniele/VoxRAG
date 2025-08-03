@@ -1,62 +1,68 @@
-# VectorMind
+# VoxRAG
 
-**Chat with your documents. Locally. No limits.**
+**VoxRAG** is a modern and modular RAG (Retrieval-Augmented Generation) platform designed to enable multi-document conversational AI. Users can upload files, extract and index content, and interact via a chatbot capable of answering questions based solely on uploaded knowledge.
 
-VectorMind is an open-source Retrieval-Augmented Generation (RAG) platform that lets users upload personal documents (PDF, CSV, DOCX) and interact with them via a conversational AI. Each session is persistent, context-aware, and private.
+---
 
-## ✨ Features
+## 🚀 Features
 
-- ✅ Upload your own documents (PDF, CSV, DOCX)
-- ✅ Embedding generation and Qdrant vector search
-- ✅ Chat with context using open-source LLMs (e.g. Mistral)
-- ✅ Modern frontend with React + Vite
-- ✅ Authentication via email/password or Google
-- ✅ File storage via Backblaze B2
-- ✅ Each user can have multiple persistent chats
+- 📁 Upload documents (PDF, DOCX, TXT)
+- 🧩 Automatic chunking and embedding with Sentence Transformers
+- 🧠 Query with LangChain + Ollama (local LLMs like Mistral)
+- 🧠 Vector search with ChromaDB
+- 📦 Containerized with Docker and Docker Compose
+- 🌐 FastAPI backend with modular routes
 
-## 🧠 AI Model
+---
 
-We're currently using [Mistral 7B Instruct](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1) locally via [Ollama](https://ollama.com/). Easily swappable with OpenAI, Claude, or any LLM API.
+## 🧠 Technologies Used
 
-## 📦 Tech Stack
+- **LangChain**: for building the RAG pipeline and question-answering chain
+- **Ollama**: to run local large language models like `mistral:instruct`
+- **ChromaDB**: local vector store for semantic search
+- **HuggingFace Sentence Transformers**: for embedding document chunks (`all-MiniLM-L6-v2`)
+- **FastAPI**: for building the backend API endpoints
+- **Docker + Docker Compose**: for full development and deployment environments
 
-- **Backend**: FastAPI + Qdrant + Langchain
-- **Frontend**: React + Vite + Tailwind
-- **Storage**: Backblaze B2
-- **Auth**: Supabase or Firebase Auth (optional)
+---
 
-## 🚀 Getting Started
+## 📦 Installation
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/yourname/vectormind.git
-   cd vectormind
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/your-username/voxrag.git
+cd voxrag
 
-2. Run Qdrant locally:
-   ```bash
-   docker run -p 6333:6333 qdrant/qdrant
-   ```
+# Build and run with Docker Compose
+docker compose up --build
+```
 
-3. Start Ollama:
-   ```bash
-   ollama run mistral
-   ```
+The backend will be available at `http://localhost:8000`, and the Ollama API at `http://localhost:11434`.
 
-4. Install backend dependencies:
-   ```bash
-   cd backend
-   pip install -r requirements.txt.txt
-   uvicorn main:app --reload
-   ```
+---
 
-5. Install frontend:
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
+## 📁 Project Structure
 
-## 📄 License
+```
+.
+├── app/
+│   ├── rag_utils/           # Chunking, embeddings, vectorstore logic
+│   ├── routes/              # FastAPI endpoints (upload, extract, query...)
+│   └── ...                  # Other internal logic
+├── start.sh                 # Entrypoint to run the FastAPI app
+├── main.py                  # FastAPI application entrypoint
+├── Dockerfile               # Backend Docker setup
+├── docker-compose.yml       # All services: backend, chroma, ollama
+└── requirements.txt         # Python dependencies
+```
 
-MIT — Open Source and free for everyone.
+---
+
+## 💬 Example Usage
+
+1. Upload a document via `/upload`
+2. Extract chunks via `/extract-chunks`
+3. Index content into ChromaDB via `/add-to-vectorstore`
+4. Ask questions via `/ask`
+
+---
