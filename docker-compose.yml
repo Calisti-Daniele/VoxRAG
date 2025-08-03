@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - chroma
+      - ollama
+    restart: unless-stopped
+
+  chroma:
+    image: chromadb/chroma
+    ports:
+      - "8001:8001"
+    volumes:
+      - chroma_data:/chroma
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8001" ]
+      interval: 10s
+      retries: 5
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  chroma_data:
+  ollama_data:
