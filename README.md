@@ -46,7 +46,7 @@ We're currently using [Mistral 7B Instruct](https://huggingface.co/mistralai/Mis
 4. Install backend dependencies:
    ```bash
    cd backend
-   pip install -r requirements.txt
+   pip install -r requirements.txt.txt
    uvicorn main:app --reload
    ```
 
