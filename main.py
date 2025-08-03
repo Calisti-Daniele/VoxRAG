@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.rag_utils.langchain_rag import get_qa_chain
 from app.rag_utils.vectorstore import add_to_vectorstore
 from app.storage import upload_file_to_r2
 from app.rag_engine import extract_structured_chunks
@@ -45,3 +46,12 @@ async def upload_and_chunk(file: UploadFile = File(...), chat_id: str = Form(...
         "message": f"{num_saved} chunk salvati per chat_id {chat_id}",
         "preview": chunks[:2]
     }
+
+@app.post("/rag")
+async def rag(chat_id: str = Form(...), query: str = Form(...)):
+    try:
+        qa = get_qa_chain(chat_id)
+        result = qa.run(query)
+        return {"response": result}
+    except Exception as e:
+        return {"error": str(e)}
