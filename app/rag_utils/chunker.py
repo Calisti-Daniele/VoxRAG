@@ -1,7 +1,17 @@
-import tiktoken  # compatibile con modelli OpenAI per il calcolo token
 from typing import List, Dict
+from tiktoken.load import load_tiktoken_bpe
+from tiktoken.core import Encoding
 
-enc = tiktoken.get_encoding("cl100k_base")  # usa encoder compatibile GPT/Mistral
+# Carica i mergeable ranks
+mergeable_ranks = load_tiktoken_bpe("./encodings/cl100k_base.tiktoken")
+
+# Istanzia l'encoder
+enc = Encoding(
+    name="cl100k_base",
+    pat_str=r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""",
+    mergeable_ranks=mergeable_ranks,
+    special_tokens={"<|endoftext|>": 100257},
+)
 
 def count_tokens(text: str) -> int:
     return len(enc.encode(text))

@@ -5,10 +5,18 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
 # Istanzia l'LLM locale
-llm = Ollama(model="mistral:instruct")
+llm = Ollama(
+    model="mistral:instruct",
+    base_url="http://ollama:11434"  # 👈 questo è fondamentale nei container
+)
+
 
 # Embedding model (mistral supporta anche questo)
-embedding = OllamaEmbeddings(model="mistral:instruct")
+embedding = OllamaEmbeddings(
+    model="mistral:instruct",
+    base_url="http://ollama:11434"  # 👈 fix fondamentale
+)
+
 
 
 def get_qa_chain(chat_id: str):
@@ -23,12 +31,17 @@ def get_qa_chain(chat_id: str):
 
     # Prompt (custom se vuoi, qui base)
     prompt = PromptTemplate.from_template(
-        """Sei un assistente intelligente. Rispondi basandoti SOLO sui documenti forniti.
-        Documenti:
+        """
+        Sei un assistente virtuale intelligente, in grado di rispondere a qualsiasi domanda in italiano.
+
+        L'utente può caricare dei documenti, e se disponibili, devi usarli per generare risposte accurate e pertinenti.
+        Altrimenti rispondi basandonti sulle tue consocenze.
+
         {context}
 
         Domanda: {question}
-        Risposta:"""
+        Risposta:
+        """
     )
 
     qa_chain = RetrievalQA.from_chain_type(

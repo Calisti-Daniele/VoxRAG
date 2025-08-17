@@ -16,3 +16,4 @@ pillow
 pymupdf
 chromadb[server]
 tiktoken
+blobfile
